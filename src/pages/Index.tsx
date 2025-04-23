@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -66,10 +65,10 @@ const Index = () => {
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center">
-            <img 
-              src="/placeholder.svg" 
-              alt="CareCrafter Logo" 
-              className="h-10 w-auto mr-3" 
+            <img
+              src="/carecrafter-logo.svg"
+              alt="CareCrafter Logo"
+              className="h-10 w-auto mr-3"
               onClick={() => navigate('/')}
               style={{ cursor: 'pointer' }}
             />
@@ -194,9 +193,9 @@ const Index = () => {
             </div>
             
             <div className="w-full md:w-1/2 flex justify-center">
-              <img 
-                src="https://placehold.co/500x500/1e40af/ffffff?text=Healthcare+Professional" 
-                alt="Doctor with stethoscope" 
+              <img
+                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80"
+                alt="Doctor holding a stethoscope"
                 className="max-w-full h-auto rounded-lg shadow-lg"
               />
             </div>
@@ -211,13 +210,13 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 1: Youth */}
-            <div 
+            <div
               className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer transform hover:-translate-y-1"
               onClick={() => navigateToChatbot('youth')}
             >
-              <div className="h-48 overflow-hidden">
+              <div className="h-48 overflow-hidden flex items-center justify-center bg-blue-100">
                 <img
-                  src="https://placehold.co/400x300/1e40af/ffffff?text=Youth+Wellness"
+                  src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80"
                   alt="Youth Wellness"
                   className="w-full h-full object-cover"
                 />
@@ -235,13 +234,13 @@ const Index = () => {
             </div>
             
             {/* Card 2: Adult */}
-            <div 
+            <div
               className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer transform hover:-translate-y-1"
               onClick={() => navigateToChatbot('adult')}
             >
-              <div className="h-48 overflow-hidden">
+              <div className="h-48 overflow-hidden flex items-center justify-center bg-blue-100">
                 <img
-                  src="https://placehold.co/400x300/1e40af/ffffff?text=Adult+Health"
+                  src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&w=400&q=80"
                   alt="Adult Health"
                   className="w-full h-full object-cover"
                 />
@@ -259,13 +258,13 @@ const Index = () => {
             </div>
             
             {/* Card 3: Senior */}
-            <div 
+            <div
               className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer transform hover:-translate-y-1"
               onClick={() => navigateToChatbot('senior')}
             >
-              <div className="h-48 overflow-hidden">
+              <div className="h-48 overflow-hidden flex items-center justify-center bg-blue-100">
                 <img
-                  src="https://placehold.co/400x300/1e40af/ffffff?text=Senior+Care"
+                  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
                   alt="Senior Care"
                   className="w-full h-full object-cover"
                 />
@@ -294,9 +293,11 @@ const Index = () => {
             {/* Testimonial 1 */}
             <div className="bg-white p-6 rounded-xl shadow">
               <div className="flex items-center mb-4">
-                <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-800 font-bold text-xl">
-                  JD
-                </div>
+                <img
+                  src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=facearea&w=64&h=64&q=80"
+                  alt="Jane Doe"
+                  className="h-12 w-12 rounded-full object-cover border-2 border-blue-200"
+                />
                 <div className="ml-4">
                   <h4 className="font-semibold">Jane Doe</h4>
                   <div className="flex text-yellow-400">
@@ -314,9 +315,11 @@ const Index = () => {
             {/* Testimonial 2 */}
             <div className="bg-white p-6 rounded-xl shadow">
               <div className="flex items-center mb-4">
-                <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-800 font-bold text-xl">
-                  JS
-                </div>
+                <img
+                  src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=facearea&w=64&h=64&q=80"
+                  alt="John Smith"
+                  className="h-12 w-12 rounded-full object-cover border-2 border-blue-200"
+                />
                 <div className="ml-4">
                   <h4 className="font-semibold">John Smith</h4>
                   <div className="flex text-yellow-400">
@@ -334,9 +337,11 @@ const Index = () => {
             {/* Testimonial 3 */}
             <div className="bg-white p-6 rounded-xl shadow">
               <div className="flex items-center mb-4">
-                <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-800 font-bold text-xl">
-                  AR
-                </div>
+                <img
+                  src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?auto=format&fit=facearea&w=64&h=64&q=80"
+                  alt="Amanda Richards"
+                  className="h-12 w-12 rounded-full object-cover border-2 border-blue-200"
+                />
                 <div className="ml-4">
                   <h4 className="font-semibold">Amanda Richards</h4>
                   <div className="flex text-yellow-400">
@@ -361,7 +366,7 @@ const Index = () => {
       <footer className="bg-blue-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-8">
-            <img src="/placeholder.svg" alt="CareCrafter Logo" className="h-12 w-auto mb-4" />
+            <img src="/carecrafter-logo.svg" alt="CareCrafter Logo" className="h-12 w-auto mb-4" />
             <h2 className="text-2xl font-bold">CareCrafter</h2>
           </div>
           
