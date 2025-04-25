@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -27,10 +26,25 @@ const Index = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
+    const savedUser = localStorage.getItem('carecrafter_user');
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+      if (user.email === email) {
+        setUser(user);
+        setIsLoginOpen(false);
+        return;
+      }
+    }
+
     const mockUser = {
-      name: "yonob73194",
-      email: "demo@example.com",
-      profileImage: "/lovable-uploads/a4f3c41a-faf5-4a46-a414-01727c795e6a.png"
+      name: email.split('@')[0],
+      email: email,
+      profileImage: `https://api.dicebear.com/7.x/initials/svg?seed=${email.split('@')[0]}`
     };
     localStorage.setItem('carecrafter_user', JSON.stringify(mockUser));
     setUser(mockUser);
@@ -39,7 +53,8 @@ const Index = () => {
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
     const name = formData.get('name') as string;
     const email = formData.get('signup-email') as string;
 
@@ -226,7 +241,6 @@ const Index = () => {
                       {[...Array(5)].map((_, i) => (
                         <svg key={i} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
                       ))}
                     </div>
                   </div>
@@ -294,6 +308,35 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
+        <DialogTrigger asChild>
+          <Button className="bg-blue-800 hover:bg-blue-700">Sign In</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Sign In</DialogTitle>
+            <DialogDescription>
+              Enter your email and password to sign in
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleLogin}>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" name="email" type="email" placeholder="Enter your email" required />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input id="password" name="password" type="password" placeholder="••••••••" required />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">Sign In</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={isSignupOpen} onOpenChange={setIsSignupOpen}>
         <DialogTrigger asChild>
