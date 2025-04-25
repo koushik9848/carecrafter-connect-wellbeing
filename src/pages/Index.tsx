@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -26,9 +25,8 @@ const Index = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock login for demonstration
     const mockUser = {
-      name: "yonob73194", // Updated to match the image
+      name: "yonob73194",
       email: "demo@example.com",
       profileImage: "/lovable-uploads/a4f3c41a-faf5-4a46-a414-01727c795e6a.png"
     };
@@ -39,13 +37,18 @@ const Index = () => {
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock signup for demonstration
-    const mockUser = {
-      name: "New User",
-      email: "new@example.com",
+    const formData = new FormData(e.target as HTMLFormElement);
+    const name = formData.get('name') as string;
+    const email = formData.get('signup-email') as string;
+
+    const newUser = {
+      name: name,
+      email: email,
+      profileImage: `https://api.dicebear.com/7.x/initials/svg?seed=${name}`
     };
-    localStorage.setItem('carecrafter_user', JSON.stringify(mockUser));
-    setUser(mockUser);
+    
+    localStorage.setItem('carecrafter_user', JSON.stringify(newUser));
+    setUser(newUser);
     setIsSignupOpen(false);
   };
 
@@ -289,6 +292,43 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      <Dialog open={isSignupOpen} onOpenChange={setIsSignupOpen}>
+        <DialogTrigger asChild>
+          <Button className="bg-blue-800 hover:bg-blue-700">Sign Up</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create an account</DialogTitle>
+            <DialogDescription>
+              Fill in your details to create a CareCrafter account
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSignup}>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input id="name" name="name" placeholder="Enter your name" required />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="signup-email">Email</Label>
+                <Input id="signup-email" name="signup-email" type="email" placeholder="Enter your email" required />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="signup-password">Password</Label>
+                <Input id="signup-password" name="signup-password" type="password" placeholder="••••••••" required />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="confirm-password">Confirm Password</Label>
+                <Input id="confirm-password" name="confirm-password" type="password" placeholder="••••••••" required />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">Sign Up</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
