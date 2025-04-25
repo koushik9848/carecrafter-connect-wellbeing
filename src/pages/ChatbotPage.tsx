@@ -1,21 +1,32 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import ChatbotInterface from "../components/ChatbotInterface";
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { ChatHistory } from "../components/ChatHistory";
+import { useChatHistory } from "../hooks/useChatHistory";
 
 const ChatbotPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // Check if ageGroup was passed through location state
   const ageGroup = location.state?.ageGroup as 'youth' | 'adult' | 'senior';
   
-  // If no ageGroup was provided, redirect to home
   if (!ageGroup) {
     return <Navigate to="/" replace />;
   }
+
+  const { sessions, createNewSession, loadSession, addMessageToSession } = useChatHistory(ageGroup);
+
+  useEffect(() => {
+    // Create a new session when the page loads
+    createNewSession();
+  }, []);
+
+  const handleSelectSession = (sessionId: string) => {
+    loadSession(sessionId);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
@@ -26,17 +37,39 @@ const ChatbotPage: React.FC = () => {
              ageGroup === 'adult' ? 'Adult Health Guide' : 
              'Senior Care Corner'}
           </h1>
-          <Button 
-            variant="outline" 
-            onClick={() => navigate('/')}
-            className="border-blue-800 text-blue-800 hover:bg-blue-50"
-          >
-            Back to Home
-          </Button>
+          <div className="flex items-center gap-4">
+            <ChatHistory 
+              sessions={sessions} 
+              onSelectSession={handleSelectSession}
+            />
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/')}
+              className="border-blue-800 text-blue-800 hover:bg-blue-50"
+            >
+              Back to Home
+            </Button>
+          </div>
         </div>
         
         <div className="bg-white shadow-lg rounded-lg h-[70vh] overflow-hidden">
-          <ChatbotInterface ageGroup={ageGroup} />
+          <ChatbotInterface 
+            ageGroup={ageGroup} 
+            onMessageSend={(message) => {
+              addMessageToSession({
+                id: Date.now(),
+                text: message,
+                isUser: true
+              });
+            }}
+            onResponseReceived={(response) => {
+              addMessageToSession({
+                id: Date.now(),
+                text: response,
+                isUser: false
+              });
+            }}
+          />
         </div>
         
         <div className="mt-6 text-center text-sm text-gray-500">

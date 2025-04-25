@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -15,9 +14,15 @@ interface Message {
 
 interface ChatbotInterfaceProps {
   ageGroup: 'youth' | 'adult' | 'senior';
+  onMessageSend?: (message: string) => void;
+  onResponseReceived?: (response: string) => void;
 }
 
-const ChatbotInterface: React.FC<ChatbotInterfaceProps> = ({ ageGroup }) => {
+const ChatbotInterface: React.FC<ChatbotInterfaceProps> = ({ 
+  ageGroup, 
+  onMessageSend, 
+  onResponseReceived 
+}) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 0,
@@ -53,6 +58,7 @@ const ChatbotInterface: React.FC<ChatbotInterfaceProps> = ({ ageGroup }) => {
     };
     
     setMessages(prev => [...prev, newUserMessage]);
+    onMessageSend?.(inputValue);
     setInputValue('');
     
     // Show typing indicator
@@ -70,6 +76,7 @@ const ChatbotInterface: React.FC<ChatbotInterfaceProps> = ({ ageGroup }) => {
       };
       
       setMessages(prev => [...prev, newAiMessage]);
+      onResponseReceived?.(aiResponse);
       setIsTyping(false);
     }, 1000);
   };
