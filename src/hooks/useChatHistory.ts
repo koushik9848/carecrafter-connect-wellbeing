@@ -19,6 +19,7 @@ interface ChatSession {
 export const useChatHistory = (ageGroup: 'youth' | 'adult' | 'senior') => {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string>('');
+  const [currentSession, setCurrentSession] = useState<ChatSession | null>(null);
 
   useEffect(() => {
     // Load chat history from localStorage
@@ -47,6 +48,7 @@ export const useChatHistory = (ageGroup: 'youth' | 'adult' | 'senior') => {
       return updatedSessions;
     });
     setCurrentSessionId(newSession.id);
+    setCurrentSession(newSession);
     return newSession;
   };
 
@@ -54,12 +56,15 @@ export const useChatHistory = (ageGroup: 'youth' | 'adult' | 'senior') => {
     const session = sessions.find(s => s.id === sessionId);
     if (session) {
       setCurrentSessionId(sessionId);
+      setCurrentSession(session);
       return session;
     }
     return null;
   };
 
   const addMessageToSession = (message: Omit<ChatMessage, 'timestamp'>) => {
+    if (!currentSessionId) return;
+
     setSessions(prev => {
       const updatedSessions = prev.map(session => {
         if (session.id === currentSessionId) {
@@ -70,6 +75,7 @@ export const useChatHistory = (ageGroup: 'youth' | 'adult' | 'senior') => {
             messages: updatedMessages,
             firstUserMessage: !session.firstUserMessage && message.isUser ? message.text : session.firstUserMessage
           };
+          setCurrentSession(updatedSession);
           return updatedSession;
         }
         return session;
@@ -82,6 +88,7 @@ export const useChatHistory = (ageGroup: 'youth' | 'adult' | 'senior') => {
   return {
     sessions,
     currentSessionId,
+    currentSession,
     createNewSession,
     loadSession,
     addMessageToSession,

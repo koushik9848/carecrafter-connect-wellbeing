@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import ChatbotInterface from "../components/ChatbotInterface";
@@ -17,11 +16,12 @@ const ChatbotPage: React.FC = () => {
     return <Navigate to="/" replace />;
   }
 
-  const { sessions, createNewSession, loadSession, addMessageToSession } = useChatHistory(ageGroup);
+  const { sessions, currentSession, createNewSession, loadSession, addMessageToSession } = useChatHistory(ageGroup);
 
   useEffect(() => {
-    // Create a new session when the page loads
-    createNewSession();
+    if (!currentSession) {
+      createNewSession();
+    }
   }, []);
 
   const handleSelectSession = (sessionId: string) => {
@@ -54,7 +54,8 @@ const ChatbotPage: React.FC = () => {
         
         <div className="bg-white shadow-lg rounded-lg h-[70vh] overflow-hidden">
           <ChatbotInterface 
-            ageGroup={ageGroup} 
+            ageGroup={ageGroup}
+            initialMessages={currentSession?.messages || []}
             onMessageSend={(message) => {
               addMessageToSession({
                 id: Date.now(),

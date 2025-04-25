@@ -16,21 +16,25 @@ interface ChatbotInterfaceProps {
   ageGroup: 'youth' | 'adult' | 'senior';
   onMessageSend?: (message: string) => void;
   onResponseReceived?: (response: string) => void;
+  initialMessages?: Message[];
 }
 
 const ChatbotInterface: React.FC<ChatbotInterfaceProps> = ({ 
   ageGroup, 
   onMessageSend, 
-  onResponseReceived 
+  onResponseReceived,
+  initialMessages = []
 }) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 0,
-      text: "Hello! I'm your healthcare assistant. Please describe your symptoms or health concerns, and I'll do my best to help you.",
-      isUser: false,
-      timestamp: new Date()
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>(
+    initialMessages.length > 0 
+      ? initialMessages 
+      : [{
+          id: 0,
+          text: "Hello! I'm your healthcare assistant. Please describe your symptoms or health concerns, and I'll do my best to help you.",
+          isUser: false,
+          timestamp: new Date()
+        }]
+  );
 
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -64,9 +68,15 @@ const ChatbotInterface: React.FC<ChatbotInterfaceProps> = ({
     // Show typing indicator
     setIsTyping(true);
     
+    // Get context from previous messages (last 3 AI responses)
+    const context = messages
+      .filter(m => !m.isUser)
+      .slice(-3)
+      .map(m => m.text);
+    
     // Generate AI response with slight delay to simulate processing
     setTimeout(() => {
-      const aiResponse = generateResponse(inputValue, ageGroup);
+      const aiResponse = generateResponse(inputValue, ageGroup, context);
       
       const newAiMessage: Message = {
         id: messages.length + 1,
