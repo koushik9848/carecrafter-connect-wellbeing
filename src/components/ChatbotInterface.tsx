@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -76,7 +77,8 @@ const ChatbotInterface: React.FC<ChatbotInterfaceProps> = ({
     
     // Generate AI response with slight delay to simulate processing
     setTimeout(() => {
-      const aiResponse = generateResponse(inputValue, ageGroup, context);
+      // Fix: Pass only the expected arguments to generateResponse
+      const aiResponse = generateResponse(inputValue, ageGroup);
       
       const newAiMessage: Message = {
         id: messages.length + 1,
