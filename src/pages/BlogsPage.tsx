@@ -1,6 +1,8 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import Header from '@/components/Header';
+import BlogModal from '@/components/BlogModal';
+import Stethoscope from '@/components/Stethoscope';
 
 interface BlogPost {
   id: number;
@@ -61,9 +63,62 @@ const blogPosts: BlogPost[] = [
 ];
 
 const BlogsPage = () => {
+  const [selectedBlog, setSelectedBlog] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSignupOpen, setIsSignupOpen] = useState(false);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('carecrafter_user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    const mockUser = {
+      name: "Demo User",
+      email: "demo@example.com",
+    };
+    localStorage.setItem('carecrafter_user', JSON.stringify(mockUser));
+    setUser(mockUser);
+    setIsLoginOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('carecrafter_user');
+    setUser(null);
+  };
+
+  const handleReadMore = (blog: any) => {
+    setSelectedBlog({
+      ...blog,
+      content: `This detailed article provides comprehensive information about ${blog.title.toLowerCase()}. 
+      The content explores various aspects of the topic, backed by medical research and expert opinions.
+      
+      Key Points:
+      - Understanding the basics
+      - Prevention and early detection
+      - Treatment options and management
+      - Lifestyle modifications
+      - When to seek professional help
+      
+      Our healthcare experts recommend following evidence-based practices and consulting with medical professionals for personalized advice.`
+    });
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      <Header 
+        currentPage="blogs"
+        user={user}
+        onLogout={handleLogout}
+        setIsLoginOpen={setIsLoginOpen}
+        setIsSignupOpen={setIsSignupOpen}
+        isLoginOpen={isLoginOpen}
+        isSignupOpen={isSignupOpen}
+        handleLogin={handleLogin}
+      />
+
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center">
@@ -130,12 +185,15 @@ const BlogsPage = () => {
                     </div>
                     <span className="font-medium text-gray-900">By {blogPosts[0].author}</span>
                   </div>
-                  <a href="#" className="text-blue-700 hover:text-blue-800 font-medium flex items-center">
+                  <button
+                    onClick={() => handleReadMore(blogPosts[0])}
+                    className="text-blue-700 hover:text-blue-800 font-medium flex items-center"
+                  >
                     Read more
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                     </svg>
-                  </a>
+                  </button>
                 </CardFooter>
               </div>
             </div>
@@ -175,18 +233,20 @@ const BlogsPage = () => {
                   </div>
                   <span className="font-medium text-sm text-gray-900">{post.author}</span>
                 </div>
-                <a href="#" className="text-blue-700 hover:text-blue-800 font-medium text-sm flex items-center">
+                <button
+                  onClick={() => handleReadMore(post)}
+                  className="text-blue-700 hover:text-blue-800 font-medium text-sm flex items-center"
+                >
                   Read more
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
-                </a>
+                </button>
               </CardFooter>
             </Card>
           ))}
         </div>
 
-        {/* Newsletter Signup */}
         <div className="mt-16 bg-blue-50 rounded-xl p-8 text-center">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">Subscribe to Our Newsletter</h3>
           <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
@@ -205,7 +265,18 @@ const BlogsPage = () => {
         </div>
       </div>
 
-      {/* Footer */}
+      <BlogModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        blog={selectedBlog || { 
+          title: '', 
+          content: '', 
+          image: '', 
+          author: '', 
+          date: '' 
+        }} 
+      />
+
       <footer className="bg-blue-900 text-white py-12 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-8">
