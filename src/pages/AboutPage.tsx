@@ -1,31 +1,11 @@
-
 import React from 'react';
+import Header from '@/components/Header';
+import Stethoscope from '@/components/Stethoscope';
 
 const AboutPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <a href="/">
-              <img 
-                src="/placeholder.svg" 
-                alt="CareCrafter Logo" 
-                className="h-10 w-auto mr-3"
-              />
-            </a>
-            <h1 className="text-xl font-bold text-blue-900">CareCrafter</h1>
-          </div>
-          
-          <nav className="hidden md:flex space-x-6">
-            <a href="/" className="text-gray-600 hover:text-blue-700">Home</a>
-            <a href="/about" className="text-blue-900 font-medium hover:text-blue-700">About</a>
-            <a href="/contact" className="text-gray-600 hover:text-blue-700">Contact Us</a>
-            <a href="/blogs" className="text-gray-600 hover:text-blue-700">Blogs</a>
-          </nav>
-        </div>
-      </header>
+      <Header currentPage="about" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12 text-center">
@@ -40,14 +20,15 @@ const AboutPage = () => {
           <div className="flex flex-col items-center">
             <div className="w-40 h-40 bg-blue-100 rounded-full mb-4 overflow-hidden">
               <img 
-                src="https://placehold.co/300x300/1e40af/ffffff?text=User" 
-                alt="Team Member" 
+                src={`https://api.dicebear.com/7.x/initials/svg?seed=Salvar Shaik`}
+                alt="Salvar Shaik" 
                 className="w-full h-full object-cover"
               />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Rajesh Kumar</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Salvar Shaik</h3>
+            <p className="text-blue-700 font-medium mb-4">Technical Lead</p>
             <p className="text-gray-600 text-center">
-              Rajesh is the visionary founder and lead developer of CareCrafter. With a background in healthcare informatics and software development, he identified the need for accessible health guidance and created this platform to bridge the gap between medical knowledge and everyday users.
+              Salvar led the technical development of CareCrafter. From building responsive React components to integrating chatbot features, he handled the most complex aspects of the platform. His strong backend and frontend skills ensured the project was both functional and user-friendly.
             </p>
           </div>
 
@@ -55,14 +36,15 @@ const AboutPage = () => {
           <div className="flex flex-col items-center">
             <div className="w-40 h-40 bg-blue-100 rounded-full mb-4 overflow-hidden">
               <img 
-                src="https://placehold.co/300x300/1e40af/ffffff?text=Friend+1" 
-                alt="Team Member" 
+                src={`https://api.dicebear.com/7.x/initials/svg?seed=Chinta Raghavendra`}
+                alt="Chinta Raghavendra" 
                 className="w-full h-full object-cover"
               />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Priya Sharma</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Chinta Raghavendra</h3>
+            <p className="text-blue-700 font-medium mb-4">Project Lead</p>
             <p className="text-gray-600 text-center">
-              Priya brings her expertise in medical content development to the CareCrafter team. As a healthcare professional with over 8 years of experience, she ensures that all information provided through our platform is accurate, helpful, and easily understandable for users of all ages.
+              As the Team Lead of CareCrafter, Raghavendra was responsible for overseeing the entire project. He ensured smooth coordination between all team members, maintained timelines, and kept the development on track. His leadership and decision-making played a key role in aligning the team with the project's core vision.
             </p>
           </div>
 
@@ -70,14 +52,15 @@ const AboutPage = () => {
           <div className="flex flex-col items-center">
             <div className="w-40 h-40 bg-blue-100 rounded-full mb-4 overflow-hidden">
               <img 
-                src="https://placehold.co/300x300/1e40af/ffffff?text=Friend+2" 
-                alt="Team Member" 
+                src={`https://api.dicebear.com/7.x/initials/svg?seed=Mohammad Arman`}
+                alt="Mohammad Arman" 
                 className="w-full h-full object-cover"
               />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Vikram Singh</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Mohammad Arman</h3>
+            <p className="text-blue-700 font-medium mb-4">Development Lead</p>
             <p className="text-gray-600 text-center">
-              Vikram is our UX/UI specialist who focuses on making CareCrafter accessible and intuitive for all users. His background in design psychology helps create an experience that feels reassuring and straightforward, especially important when users are seeking health guidance.
+              Arman took charge of feature implementation and UI/UX integration. He translated ideas into actual components, worked on the page structures, and helped fine-tune the interface for performance and accessibility. His dedication brought the project's design and functionality together smoothly.
             </p>
           </div>
         </div>
@@ -116,11 +99,13 @@ const AboutPage = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-blue-900 text-white py-12 mt-12">
+      <footer className="bg-blue-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-8">
-            <img src="/placeholder.svg" alt="CareCrafter Logo" className="h-12 w-auto mb-4" />
-            <h2 className="text-2xl font-bold">CareCrafter</h2>
+            <div className="flex items-center mb-4">
+              <Stethoscope className="h-12 w-12 text-white mr-3" />
+              <h2 className="text-2xl font-bold">CareCrafter</h2>
+            </div>
           </div>
           
           <div className="border-t border-white/20 pt-8 text-center">

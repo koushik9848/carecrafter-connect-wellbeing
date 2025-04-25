@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
+import Header from '@/components/Header';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Stethoscope from '@/components/Stethoscope';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -59,118 +59,32 @@ const Index = () => {
     navigate('/chatbot', { state: { ageGroup } });
   };
 
+  const testimonials = [
+    {
+      name: "Ashish",
+      image: "https://api.dicebear.com/7.x/initials/svg?seed=Ashish",
+      text: "CareCrafter's chatbot was so helpful when my daughter had a fever. The medicine recommendations and dietary advice were spot on!"
+    },
+    {
+      name: "Manohar",
+      image: "https://api.dicebear.com/7.x/initials/svg?seed=Manohar",
+      text: "I've been using the Senior Care section for my father, and it's been a lifesaver. The tailored advice for seniors is exceptional."
+    },
+    {
+      name: "Soumya",
+      image: "https://api.dicebear.com/7.x/initials/svg?seed=Soumya",
+      text: "As a college student, the Youth Wellness Hub has been great for managing my health independently. Quick, reliable advice when I need it most."
+    }
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <img
-              src="/carecrafter-logo.svg"
-              alt="CareCrafter Logo"
-              className="h-10 w-auto mr-3"
-              onClick={() => navigate('/')}
-              style={{ cursor: 'pointer' }}
-            />
-            <h1 className="text-xl font-bold text-blue-900">CareCrafter</h1>
-          </div>
-          
-          <nav className="hidden md:flex space-x-6">
-            <a href="/" className="text-blue-900 font-medium hover:text-blue-700">Home</a>
-            <a href="/about" className="text-gray-600 hover:text-blue-700">About</a>
-            <a href="/contact" className="text-gray-600 hover:text-blue-700">Contact Us</a>
-            <a href="/blogs" className="text-gray-600 hover:text-blue-700">Blogs</a>
-          </nav>
-          
-          <div className="flex items-center">
-            {user ? (
-              <div className="flex items-center">
-                <div className="mr-3">
-                  <span className="text-sm text-gray-600">Welcome, {user.name}</span>
-                </div>
-                <Button variant="ghost" size="sm" onClick={handleLogout}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                    <polyline points="16 17 21 12 16 7"></polyline>
-                    <line x1="21" y1="12" x2="9" y2="12"></line>
-                  </svg>
-                  Logout
-                </Button>
-              </div>
-            ) : (
-              <div className="flex space-x-2">
-                <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" className="border-blue-800 text-blue-800 hover:bg-blue-50">Login</Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Login to CareCrafter</DialogTitle>
-                      <DialogDescription>
-                        Enter your credentials to access your account
-                      </DialogDescription>
-                    </DialogHeader>
-                    <form onSubmit={handleLogin}>
-                      <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="email">Email</Label>
-                          <Input id="email" placeholder="Enter your email" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="password">Password</Label>
-                          <Input id="password" type="password" placeholder="••••••••" />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit">Login</Button>
-                      </DialogFooter>
-                    </form>
-                  </DialogContent>
-                </Dialog>
+      <Header 
+        currentPage="home"
+        user={user}
+        onLogout={handleLogout}
+      />
 
-                <Dialog open={isSignupOpen} onOpenChange={setIsSignupOpen}>
-                  <DialogTrigger asChild>
-                    <Button className="bg-blue-800 hover:bg-blue-700">Sign Up</Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Create an account</DialogTitle>
-                      <DialogDescription>
-                        Fill in your details to create a CareCrafter account
-                      </DialogDescription>
-                    </DialogHeader>
-                    <form onSubmit={handleSignup}>
-                      <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="name">Full Name</Label>
-                          <Input id="name" placeholder="Enter your name" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="signup-email">Email</Label>
-                          <Input id="signup-email" placeholder="Enter your email" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="signup-password">Password</Label>
-                          <Input id="signup-password" type="password" placeholder="••••••••" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="confirm-password">Confirm Password</Label>
-                          <Input id="confirm-password" type="password" placeholder="••••••••" />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit">Sign Up</Button>
-                      </DialogFooter>
-                    </form>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
-
-      {/* Hero Section */}
       <section className="bg-blue-800 flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 relative">
           <div className="flex flex-col md:flex-row items-center justify-between">
@@ -203,18 +117,16 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Service Cards Section */}
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Choose Your Care Path</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Card 1: Youth */}
             <div
               className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer transform hover:-translate-y-1"
               onClick={() => navigateToChatbot('youth')}
             >
-              <div className="h-48 overflow-hidden flex items-center justify-center bg-blue-100">
+              <div className="h-48 overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80"
                   alt="Youth Wellness"
@@ -233,12 +145,11 @@ const Index = () => {
               </div>
             </div>
             
-            {/* Card 2: Adult */}
             <div
               className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer transform hover:-translate-y-1"
               onClick={() => navigateToChatbot('adult')}
             >
-              <div className="h-48 overflow-hidden flex items-center justify-center bg-blue-100">
+              <div className="h-48 overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&w=400&q=80"
                   alt="Adult Health"
@@ -257,12 +168,11 @@ const Index = () => {
               </div>
             </div>
             
-            {/* Card 3: Senior */}
             <div
               className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer transform hover:-translate-y-1"
               onClick={() => navigateToChatbot('senior')}
             >
-              <div className="h-48 overflow-hidden flex items-center justify-center bg-blue-100">
+              <div className="h-48 overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
                   alt="Senior Care"
@@ -284,90 +194,43 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Testimonials Section */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">What Our Users Say</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Testimonial 1 */}
-            <div className="bg-white p-6 rounded-xl shadow">
-              <div className="flex items-center mb-4">
-                <img
-                  src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=facearea&w=64&h=64&q=80"
-                  alt="Jane Doe"
-                  className="h-12 w-12 rounded-full object-cover border-2 border-blue-200"
-                />
-                <div className="ml-4">
-                  <h4 className="font-semibold">Jane Doe</h4>
-                  <div className="flex text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-white p-6 rounded-xl shadow">
+                <div className="flex items-center mb-4">
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="h-12 w-12 rounded-full object-cover border-2 border-blue-200"
+                  />
+                  <div className="ml-4">
+                    <h4 className="font-semibold">{testimonial.name}</h4>
+                    <div className="flex text-yellow-400">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      ))}
+                    </div>
                   </div>
                 </div>
+                <p className="text-gray-600">{testimonial.text}</p>
               </div>
-              <p className="text-gray-600">"CareCrafter's chatbot was so helpful when my daughter had a fever. The medicine recommendations and dietary advice were spot on!"</p>
-            </div>
-            
-            {/* Testimonial 2 */}
-            <div className="bg-white p-6 rounded-xl shadow">
-              <div className="flex items-center mb-4">
-                <img
-                  src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=facearea&w=64&h=64&q=80"
-                  alt="John Smith"
-                  className="h-12 w-12 rounded-full object-cover border-2 border-blue-200"
-                />
-                <div className="ml-4">
-                  <h4 className="font-semibold">John Smith</h4>
-                  <div className="flex text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-600">"I've been using the Senior Care section for my father, and it's been a lifesaver. The tailored advice for seniors is exceptional."</p>
-            </div>
-            
-            {/* Testimonial 3 */}
-            <div className="bg-white p-6 rounded-xl shadow">
-              <div className="flex items-center mb-4">
-                <img
-                  src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?auto=format&fit=facearea&w=64&h=64&q=80"
-                  alt="Amanda Richards"
-                  className="h-12 w-12 rounded-full object-cover border-2 border-blue-200"
-                />
-                <div className="ml-4">
-                  <h4 className="font-semibold">Amanda Richards</h4>
-                  <div className="flex text-yellow-400">
-                    {[...Array(4)].map((_, i) => (
-                      <svg key={i} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-300" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-600">"As a college student, the Youth Wellness Hub has been great for managing my health independently. Quick, reliable advice when I need it most."</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-blue-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-8">
-            <img src="/carecrafter-logo.svg" alt="CareCrafter Logo" className="h-12 w-auto mb-4" />
-            <h2 className="text-2xl font-bold">CareCrafter</h2>
+            <div className="flex items-center mb-4">
+              <Stethoscope className="h-12 w-12 text-white mr-3" />
+              <h2 className="text-2xl font-bold">CareCrafter</h2>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">

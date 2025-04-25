@@ -1,5 +1,5 @@
-
 import React, { useState } from 'react';
+import Header from '@/components/Header';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -39,28 +39,7 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <a href="/">
-              <img 
-                src="/placeholder.svg" 
-                alt="CareCrafter Logo" 
-                className="h-10 w-auto mr-3"
-              />
-            </a>
-            <h1 className="text-xl font-bold text-blue-900">CareCrafter</h1>
-          </div>
-          
-          <nav className="hidden md:flex space-x-6">
-            <a href="/" className="text-gray-600 hover:text-blue-700">Home</a>
-            <a href="/about" className="text-gray-600 hover:text-blue-700">About</a>
-            <a href="/contact" className="text-blue-900 font-medium hover:text-blue-700">Contact Us</a>
-            <a href="/blogs" className="text-gray-600 hover:text-blue-700">Blogs</a>
-          </nav>
-        </div>
-      </header>
+      <Header currentPage="contact" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12 text-center">
@@ -140,7 +119,7 @@ const ContactPage = () => {
             </form>
           </div>
           
-          {/* Contact Info */}
+          {/* Contact Info Section */}
           <div>
             <div className="bg-blue-50 p-8 rounded-lg mb-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">Contact Information</h2>
@@ -166,7 +145,7 @@ const ContactPage = () => {
                   </div>
                   <div className="ml-3">
                     <p className="text-sm font-medium text-gray-900">Phone</p>
-                    <p className="text-sm text-gray-600">+1 (555) 123-4567</p>
+                    <p className="text-sm text-gray-600">+91 2222363672</p>
                   </div>
                 </div>
                 
@@ -180,9 +159,9 @@ const ContactPage = () => {
                   <div className="ml-3">
                     <p className="text-sm font-medium text-gray-900">Address</p>
                     <p className="text-sm text-gray-600">
-                      123 Health Avenue<br />
-                      Tech City, CA 90210<br />
-                      United States
+                      Hyderabad city<br />
+                      Telangana<br />
+                      500070
                     </p>
                   </div>
                 </div>
