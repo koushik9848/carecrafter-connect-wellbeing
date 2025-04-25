@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import Stethoscope from '@/components/Stethoscope';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,30 @@ const ContactPage = () => {
     subject: '',
     message: ''
   });
+
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSignupOpen, setIsSignupOpen] = useState(false);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('carecrafter_user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Mock login for demonstration
+    const mockUser = {
+      name: "Demo User",
+      email: "demo@example.com",
+    };
+    localStorage.setItem('carecrafter_user', JSON.stringify(mockUser));
+    setUser(mockUser);
+    setIsLoginOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('carecrafter_user');
+    setUser(null);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -39,7 +64,16 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header currentPage="contact" />
+      <Header 
+        currentPage="contact"
+        user={user}
+        onLogout={handleLogout}
+        setIsLoginOpen={setIsLoginOpen}
+        setIsSignupOpen={setIsSignupOpen}
+        isLoginOpen={isLoginOpen}
+        isSignupOpen={isSignupOpen}
+        handleLogin={handleLogin}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12 text-center">
@@ -205,8 +239,10 @@ const ContactPage = () => {
       <footer className="bg-blue-900 text-white py-12 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-8">
-            <img src="/placeholder.svg" alt="CareCrafter Logo" className="h-12 w-auto mb-4" />
-            <h2 className="text-2xl font-bold">CareCrafter</h2>
+            <div className="flex items-center mb-4">
+              <Stethoscope className="h-12 w-12 text-white mr-3" />
+              <h2 className="text-2xl font-bold">CareCrafter</h2>
+            </div>
           </div>
           
           <div className="border-t border-white/20 pt-8 text-center">

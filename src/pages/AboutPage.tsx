@@ -1,11 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Stethoscope from '@/components/Stethoscope';
 
 const AboutPage = () => {
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSignupOpen, setIsSignupOpen] = useState(false);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('carecrafter_user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Mock login for demonstration
+    const mockUser = {
+      name: "Demo User",
+      email: "demo@example.com",
+    };
+    localStorage.setItem('carecrafter_user', JSON.stringify(mockUser));
+    setUser(mockUser);
+    setIsLoginOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('carecrafter_user');
+    setUser(null);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header currentPage="about" />
+      <Header 
+        currentPage="about"
+        user={user}
+        onLogout={handleLogout}
+        setIsLoginOpen={setIsLoginOpen}
+        setIsSignupOpen={setIsSignupOpen}
+        isLoginOpen={isLoginOpen}
+        isSignupOpen={isSignupOpen}
+        handleLogin={handleLogin}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12 text-center">
