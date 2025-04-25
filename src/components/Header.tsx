@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Stethoscope } from 'lucide-react';
+import { User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Stethoscope from '@/components/Stethoscope';
 
 interface HeaderProps {
   currentPage: 'home' | 'about' | 'contact' | 'blogs';
@@ -20,6 +22,7 @@ interface HeaderProps {
   user?: {
     name: string;
     email: string;
+    profileImage?: string;
   } | null;
   setIsLoginOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSignupOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,7 +31,16 @@ interface HeaderProps {
   handleLogin: (e: React.FormEvent) => void;
 }
 
-const Header = ({ currentPage, onLogout, user, setIsLoginOpen, setIsSignupOpen, isLoginOpen, isSignupOpen, handleLogin }: HeaderProps) => {
+const Header = ({ 
+  currentPage, 
+  onLogout, 
+  user, 
+  setIsLoginOpen, 
+  setIsSignupOpen, 
+  isLoginOpen, 
+  isSignupOpen, 
+  handleLogin 
+}: HeaderProps) => {
   return (
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -52,11 +64,18 @@ const Header = ({ currentPage, onLogout, user, setIsLoginOpen, setIsSignupOpen, 
           {user ? (
             <div className="flex items-center">
               <div className="mr-3 flex items-center">
-                <Avatar className="h-8 w-8 mr-2">
-                  <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.name}`} alt={user.name} />
-                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                <Avatar className="h-8 w-8 mr-2 border-2 border-blue-500">
+                  <AvatarImage 
+                    src={user.profileImage || `https://api.dicebear.com/7.x/initials/svg?seed=${user.name}`} 
+                    alt={user.name} 
+                  />
+                  <AvatarFallback>
+                    <User className="h-5 w-5 text-gray-500" />
+                  </AvatarFallback>
                 </Avatar>
-                <span className="text-sm text-gray-600">Welcome, {user.name}</span>
+                <span className="text-sm text-white bg-blue-600 px-2 py-1 rounded-full">
+                  {user.name}
+                </span>
               </div>
               <Button variant="ghost" size="sm" onClick={onLogout}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">

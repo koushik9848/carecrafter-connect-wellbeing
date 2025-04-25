@@ -28,8 +28,9 @@ const Index = () => {
     e.preventDefault();
     // Mock login for demonstration
     const mockUser = {
-      name: "Demo User",
+      name: "yonob73194", // Updated to match the image
       email: "demo@example.com",
+      profileImage: "/lovable-uploads/a4f3c41a-faf5-4a46-a414-01727c795e6a.png"
     };
     localStorage.setItem('carecrafter_user', JSON.stringify(mockUser));
     setUser(mockUser);
