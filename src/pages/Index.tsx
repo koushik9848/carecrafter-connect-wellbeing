@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -30,25 +29,16 @@ const Index = () => {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
+    const name = email.split('@')[0];
 
-    const savedUser = localStorage.getItem('carecrafter_user');
-    if (savedUser) {
-      const user = JSON.parse(savedUser);
-      if (user.email === email) {
-        setUser(user);
-        setIsLoginOpen(false);
-        return;
-      }
-    }
-
-    const mockUser = {
-      name: email.split('@')[0],
+    const newUser = {
+      name: name.charAt(0).toUpperCase() + name.slice(1),
       email: email,
-      profileImage: `https://api.dicebear.com/7.x/initials/svg?seed=${email.split('@')[0]}`
+      profileImage: `https://api.dicebear.com/7.x/initials/svg?seed=${name}`
     };
-    localStorage.setItem('carecrafter_user', JSON.stringify(mockUser));
-    setUser(mockUser);
+    
+    localStorage.setItem('carecrafter_user', JSON.stringify(newUser));
+    setUser(newUser);
     setIsLoginOpen(false);
   };
 
@@ -242,7 +232,6 @@ const Index = () => {
                       {[...Array(5)].map((_, i) => (
                         <svg key={i} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
                       ))}
                     </div>
                   </div>
