@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MessageSquare, Activity, List } from 'lucide-react';
 import Header from '@/components/Header';
 import {
   Dialog,
