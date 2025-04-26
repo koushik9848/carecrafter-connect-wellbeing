@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import ChatbotInterface from "../components/ChatbotInterface";
@@ -5,6 +6,7 @@ import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ChatHistory } from "../components/ChatHistory";
 import { useChatHistory } from "../hooks/useChatHistory";
+import { toast } from "@/hooks/use-toast";
 
 const ChatbotPage: React.FC = () => {
   const location = useLocation();
@@ -16,7 +18,14 @@ const ChatbotPage: React.FC = () => {
     return <Navigate to="/" replace />;
   }
 
-  const { sessions, currentSession, createNewSession, loadSession, addMessageToSession } = useChatHistory(ageGroup);
+  const { 
+    sessions, 
+    currentSession, 
+    currentSessionId,
+    createNewSession, 
+    loadSession, 
+    addMessageToSession 
+  } = useChatHistory(ageGroup);
 
   useEffect(() => {
     if (!currentSession) {
@@ -25,7 +34,13 @@ const ChatbotPage: React.FC = () => {
   }, []);
 
   const handleSelectSession = (sessionId: string) => {
-    loadSession(sessionId);
+    const session = loadSession(sessionId);
+    if (session) {
+      toast({
+        title: "Chat session loaded",
+        description: "Continuing from your previous conversation"
+      });
+    }
   };
 
   return (
@@ -41,6 +56,7 @@ const ChatbotPage: React.FC = () => {
             <ChatHistory 
               sessions={sessions} 
               onSelectSession={handleSelectSession}
+              currentSessionId={currentSessionId}
             />
             <Button 
               variant="outline" 

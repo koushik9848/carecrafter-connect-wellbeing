@@ -2,7 +2,7 @@
 import { ScrollArea } from "./ui/scroll-area";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, History } from "lucide-react";
 
 interface ChatHistoryProps {
   sessions: Array<{
@@ -12,14 +12,19 @@ interface ChatHistoryProps {
     ageGroup: 'youth' | 'adult' | 'senior';
   }>;
   onSelectSession: (sessionId: string) => void;
+  currentSessionId?: string;
 }
 
-export const ChatHistory: React.FC<ChatHistoryProps> = ({ sessions, onSelectSession }) => {
+export const ChatHistory: React.FC<ChatHistoryProps> = ({ 
+  sessions, 
+  onSelectSession,
+  currentSessionId 
+}) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline" size="sm" className="gap-2">
-          <ArrowLeft className="h-4 w-4" />
+          <History className="h-4 w-4" />
           Chat History
         </Button>
       </SheetTrigger>
@@ -32,13 +37,13 @@ export const ChatHistory: React.FC<ChatHistoryProps> = ({ sessions, onSelectSess
             {sessions.map((session) => (
               <Button
                 key={session.id}
-                variant="outline"
+                variant={session.id === currentSessionId ? "default" : "outline"}
                 className="w-full flex flex-col items-start gap-1 h-auto p-4"
                 onClick={() => onSelectSession(session.id)}
               >
                 <span className="font-medium">
-                  Chat on {session.startTime.toLocaleDateString()} at{" "}
-                  {session.startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  Chat on {new Date(session.startTime).toLocaleDateString()} at{" "}
+                  {new Date(session.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
                 {session.firstUserMessage && (
                   <span className="text-sm text-muted-foreground line-clamp-2 text-left">

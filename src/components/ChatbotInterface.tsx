@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -44,6 +43,19 @@ const ChatbotInterface: React.FC<ChatbotInterfaceProps> = ({
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useEffect(() => {
+    if (initialMessages.length > 0) {
+      setMessages(initialMessages);
+    } else {
+      setMessages([{
+        id: 0,
+        text: "Hello! I'm your healthcare assistant. Please describe your symptoms or health concerns, and I'll do my best to help you.",
+        isUser: false,
+        timestamp: new Date()
+      }]);
+    }
+  }, [initialMessages]);
 
   useEffect(() => {
     scrollToBottom();
@@ -121,7 +133,7 @@ const ChatbotInterface: React.FC<ChatbotInterfaceProps> = ({
                 >
                   <div className="text-sm whitespace-pre-line">{message.text}</div>
                   <div className={`text-xs mt-1 ${message.isUser ? 'text-blue-100' : 'text-gray-500'}`}>
-                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
               </div>
