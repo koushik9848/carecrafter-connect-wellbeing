@@ -131,7 +131,7 @@ const Index = () => {
               <img
                 src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=600&q=80"
                 alt="Doctor with stethoscope"
-                className="max-w-full h-auto rounded-lg shadow-lg"
+                className="max-w-md h-auto rounded-lg shadow-lg object-cover"
               />
             </div>
           </div>
