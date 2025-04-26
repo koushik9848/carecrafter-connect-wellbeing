@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MessageSquare, Activity, List } from 'lucide-react';
@@ -108,7 +107,7 @@ const Index = () => {
 
       <section className="bg-blue-800 flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 relative">
-          <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="w-full md:w-1/2 text-white mb-10 md:mb-0">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
                 Transforming your care
@@ -127,11 +126,11 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="w-full md:w-1/2 flex justify-center">
+            <div className="w-full md:w-1/2 flex justify-center px-4">
               <img
                 src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=600&q=80"
                 alt="Doctor with stethoscope"
-                className="max-w-md h-auto rounded-lg shadow-lg object-cover"
+                className="w-[400px] h-[300px] rounded-lg shadow-lg object-cover mx-auto"
               />
             </div>
           </div>
