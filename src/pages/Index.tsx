@@ -128,10 +128,42 @@ const Index = () => {
             
             <div className="w-full md:w-1/2 flex justify-center">
               <img
-                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80"
-                alt="Doctor holding a stethoscope"
+                src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=600&q=80"
+                alt="Doctor with stethoscope"
                 className="max-w-full h-auto rounded-lg shadow-lg"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">How It Works</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center p-6">
+              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <MessageSquare className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Share Symptoms</h3>
+              <p className="text-gray-600">Describe your symptoms in detail through our intuitive chat interface. Our system understands natural language, making it easy to communicate your health concerns.</p>
+            </div>
+
+            <div className="text-center p-6">
+              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <Activity className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Get Personalized Advice</h3>
+              <p className="text-gray-600">Receive tailored health recommendations based on your symptoms, medical history, and age group. Our AI analyzes your information to provide relevant guidance.</p>
+            </div>
+
+            <div className="text-center p-6">
+              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <List className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Follow Treatment Plan</h3>
+              <p className="text-gray-600">Get a clear, step-by-step treatment plan that's easy to follow. Track your progress and receive ongoing support throughout your recovery journey.</p>
             </div>
           </div>
         </div>
