@@ -38,6 +38,8 @@ interface BlogModalProps {
     references?: string[];
     authorBio?: string;
     authorImage?: string;
+    category?: string;
+    imageCaption?: string;
     relatedPosts?: Array<{
       id: number;
       title: string;
