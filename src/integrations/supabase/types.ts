@@ -14,7 +14,189 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      medical_records: {
+        Row: {
+          created_at: string
+          doctor_name: string | null
+          document_type: Database["public"]["Enums"]["document_type"]
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          hospital_name: string | null
+          id: string
+          notes: string | null
+          report_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          doctor_name?: string | null
+          document_type?: Database["public"]["Enums"]["document_type"]
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          hospital_name?: string | null
+          id?: string
+          notes?: string | null
+          report_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          doctor_name?: string | null
+          document_type?: Database["public"]["Enums"]["document_type"]
+          file_name?: string
+          file_path?: string
+          file_size?: number
+          file_type?: string
+          hospital_name?: string | null
+          id?: string
+          notes?: string | null
+          report_date?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      qr_access_logs: {
+        Row: {
+          accessed_at: string
+          id: string
+          ip_address: string | null
+          token_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          accessed_at?: string
+          id?: string
+          ip_address?: string | null
+          token_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          accessed_at?: string
+          id?: string
+          ip_address?: string | null
+          token_id?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qr_access_logs_token_id_fkey"
+            columns: ["token_id"]
+            isOneToOne: false
+            referencedRelation: "qr_access_tokens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      qr_access_tokens: {
+        Row: {
+          access_count: number
+          created_at: string
+          expires_at: string | null
+          id: string
+          is_revoked: boolean
+          password_hash: string | null
+          record_id: string | null
+          token: string
+          user_id: string
+        }
+        Insert: {
+          access_count?: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_revoked?: boolean
+          password_hash?: string | null
+          record_id?: string | null
+          token: string
+          user_id: string
+        }
+        Update: {
+          access_count?: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_revoked?: boolean
+          password_hash?: string | null
+          record_id?: string | null
+          token?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qr_access_tokens_record_id_fkey"
+            columns: ["record_id"]
+            isOneToOne: false
+            referencedRelation: "medical_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      record_tags: {
+        Row: {
+          created_at: string
+          id: string
+          record_id: string
+          tag: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          record_id: string
+          tag: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          record_id?: string
+          tag?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "record_tags_record_id_fkey"
+            columns: ["record_id"]
+            isOneToOne: false
+            referencedRelation: "medical_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +205,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      document_type:
+        | "prescription"
+        | "lab_report"
+        | "imaging"
+        | "discharge_summary"
+        | "vaccination_record"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +338,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      document_type: [
+        "prescription",
+        "lab_report",
+        "imaging",
+        "discharge_summary",
+        "vaccination_record",
+        "other",
+      ],
+    },
   },
 } as const
