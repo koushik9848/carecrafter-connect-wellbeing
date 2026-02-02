@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 import Stethoscope from '@/components/Stethoscope';
 
 interface HeaderProps {
-  currentPage: 'home' | 'about' | 'contact' | 'blogs' | 'health-tracker' | 'medical-records';
+  currentPage: 'home' | 'blogs' | 'health-tracker' | 'medical-records';
   onLogout?: () => void;
   user?: {
     name: string;
@@ -55,10 +55,8 @@ const Header = ({
         
         <nav className="hidden md:flex space-x-6">
           <a href="/" className={`${currentPage === 'home' ? 'text-blue-900 font-medium' : 'text-gray-600'} hover:text-blue-700`}>Home</a>
-          <a href="/about" className={`${currentPage === 'about' ? 'text-blue-900 font-medium' : 'text-gray-600'} hover:text-blue-700`}>About</a>
           <a href="/health-tracker" className={`${currentPage === 'health-tracker' ? 'text-blue-900 font-medium' : 'text-gray-600'} hover:text-blue-700`}>Health Tracker</a>
           <a href="/medical-records" className={`${currentPage === 'medical-records' ? 'text-blue-900 font-medium' : 'text-gray-600'} hover:text-blue-700`}>Medical Records</a>
-          <a href="/contact" className={`${currentPage === 'contact' ? 'text-blue-900 font-medium' : 'text-gray-600'} hover:text-blue-700`}>Contact Us</a>
           <a href="/blogs" className={`${currentPage === 'blogs' ? 'text-blue-900 font-medium' : 'text-gray-600'} hover:text-blue-700`}>Blogs</a>
         </nav>
         
