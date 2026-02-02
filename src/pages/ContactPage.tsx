@@ -65,7 +65,7 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header 
-        currentPage="contact"
+        currentPage="home"
         user={user}
         onLogout={handleLogout}
         setIsLoginOpen={setIsLoginOpen}
