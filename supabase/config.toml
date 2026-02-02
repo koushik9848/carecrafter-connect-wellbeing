@@ -1,1 +1,4 @@
 project_id = "pnmrhgubnaltgnuylivh"
+
+[functions."medical-access"]
+verify_jwt = false

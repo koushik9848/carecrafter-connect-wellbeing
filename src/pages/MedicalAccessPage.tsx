@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
-import { FileText, Image as ImageIcon, Lock, AlertTriangle, Calendar, Building, User, Download, Eye } from 'lucide-react';
+import { FileText, Image as ImageIcon, Lock, AlertTriangle, Calendar, Building, User, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,7 +22,16 @@ interface AccessRecord {
   doctor_name: string | null;
   notes: string | null;
   created_at: string;
+  signed_url?: string | null;
 }
+
+type MedicalAccessResponse = {
+  ok: boolean;
+  error?: string;
+  ownerName?: string;
+  requiresPassword?: boolean;
+  records?: AccessRecord[];
+};
 
 const DOCUMENT_TYPE_LABELS: Record<string, string> = {
   prescription: 'Prescription',
@@ -53,41 +62,40 @@ const MedicalAccessPage: React.FC = () => {
   }, [token]);
 
   const validateToken = async () => {
-    try {
-      // Get token info
-      const { data: tokenData, error: tokenError } = await supabase
-        .from('qr_access_tokens')
-        .select('*, profiles:user_id(full_name)')
-        .eq('token', token)
-        .maybeSingle();
+    if (!token) return;
 
-      if (tokenError || !tokenData) {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { data, error: invokeError } = await supabase.functions.invoke<MedicalAccessResponse>(
+        'medical-access',
+        { body: { token } }
+      );
+
+      if (invokeError || !data) {
         setError('Invalid or expired access link');
         setLoading(false);
         return;
       }
 
-      if (tokenData.is_revoked) {
-        setError('This access link has been revoked');
+      if (!data.ok) {
+        setError(data.error || 'Invalid or expired access link');
         setLoading(false);
         return;
       }
 
-      if (tokenData.expires_at && new Date(tokenData.expires_at) < new Date()) {
-        setError('This access link has expired');
-        setLoading(false);
-        return;
-      }
+      setOwnerName(data.ownerName || 'User');
 
-      setOwnerName((tokenData as any).profiles?.full_name || 'User');
-
-      if (tokenData.password_hash) {
+      if (data.requiresPassword) {
         setRequiresPassword(true);
         setLoading(false);
         return;
       }
 
-      await loadRecords(tokenData);
+      setRequiresPassword(false);
+      setRecords(data.records || []);
+      setLoading(false);
     } catch (err) {
       console.error('Error validating token:', err);
       setError('Something went wrong. Please try again.');
@@ -100,91 +108,50 @@ const MedicalAccessPage: React.FC = () => {
     setLoading(true);
 
     try {
-      const { data: tokenData, error: tokenError } = await supabase
-        .from('qr_access_tokens')
-        .select('*')
-        .eq('token', token)
-        .single();
+      const { data, error: invokeError } = await supabase.functions.invoke<MedicalAccessResponse>(
+        'medical-access',
+        { body: { token, password } }
+      );
 
-      if (tokenError || !tokenData) {
+      if (invokeError || !data) {
         setError('Invalid access link');
         setLoading(false);
         return;
       }
 
-      // Simple password check (base64 encoded for demo)
-      if (tokenData.password_hash !== btoa(password)) {
+      if (!data.ok) {
         toast({
-          title: "Incorrect password",
-          description: "Please try again",
-          variant: "destructive"
+          title: 'Access denied',
+          description: data.error || 'Incorrect password',
+          variant: 'destructive',
         });
         setLoading(false);
         return;
       }
 
+      setOwnerName(data.ownerName || ownerName || 'User');
       setAuthenticated(true);
-      await loadRecords(tokenData);
+      setRequiresPassword(false);
+      setRecords(data.records || []);
+      setLoading(false);
     } catch (err) {
       setError('Something went wrong');
       setLoading(false);
     }
   };
 
-  const loadRecords = async (tokenData: any) => {
-    try {
-      // Log the access
-      await supabase.from('qr_access_logs').insert({
-        token_id: tokenData.id,
-        user_agent: navigator.userAgent
-      });
-
-      // Update access count
-      await supabase
-        .from('qr_access_tokens')
-        .update({ access_count: tokenData.access_count + 1 })
-        .eq('id', tokenData.id);
-
-      // Fetch records
-      let query = supabase
-        .from('medical_records')
-        .select('*')
-        .eq('user_id', tokenData.user_id)
-        .order('created_at', { ascending: false });
-
-      if (tokenData.record_id) {
-        query = query.eq('id', tokenData.record_id);
-      }
-
-      const { data: recordsData, error: recordsError } = await query;
-
-      if (recordsError) throw recordsError;
-
-      setRecords(recordsData || []);
-      setLoading(false);
-    } catch (err) {
-      console.error('Error loading records:', err);
-      setError('Failed to load medical records');
-      setLoading(false);
-    }
-  };
-
-  const viewRecord = async (record: AccessRecord) => {
-    try {
-      const { data, error } = await supabase.storage
-        .from('medical-records')
-        .createSignedUrl(record.file_path, 3600);
-
-      if (error) throw error;
-      setFileUrl(data.signedUrl);
-      setSelectedRecord(record);
-    } catch (err) {
+  const viewRecord = (record: AccessRecord) => {
+    if (!record.signed_url) {
       toast({
-        title: "Error",
-        description: "Failed to load file",
-        variant: "destructive"
+        title: 'Error',
+        description: 'Failed to load file',
+        variant: 'destructive',
       });
+      return;
     }
+
+    setFileUrl(record.signed_url);
+    setSelectedRecord(record);
   };
 
   if (loading) {
