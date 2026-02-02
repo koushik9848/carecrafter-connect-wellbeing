@@ -41,6 +41,10 @@ const Header = ({
   isSignupOpen, 
   handleLogin 
 }: HeaderProps) => {
+  const displayName = user?.name
+    ? (user.name.includes('@') ? user.name.split('@')[0] : user.name)
+    : '';
+
   return (
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -74,7 +78,7 @@ const Header = ({
                   </AvatarFallback>
                 </Avatar>
                 <span className="text-sm text-white bg-blue-600 px-2 py-1 rounded-full">
-                  {user.name}
+                  {displayName}
                 </span>
               </div>
               <Button variant="ghost" size="sm" onClick={onLogout}>
