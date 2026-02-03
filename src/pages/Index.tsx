@@ -120,7 +120,12 @@ const Index = () => {
                 <Button className="bg-white text-blue-800 hover:bg-blue-50" size="lg" onClick={() => navigateToChatbot('adult')}>
                   Get Started
                 </Button>
-                <Button variant="outline" className="border-white text-white hover:bg-blue-700" size="lg">
+                <Button 
+                  variant="outline" 
+                  className="border-white text-white hover:bg-blue-700" 
+                  size="lg"
+                  onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                >
                   Learn More
                 </Button>
               </div>
@@ -137,7 +142,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="bg-white py-16">
+      <section id="how-it-works" className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">How It Works</h2>
           

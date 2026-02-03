@@ -22,7 +22,7 @@ interface Disease {
 export const diseases: Disease[] = [
   {
     name: 'Common Cold',
-    symptoms: ['runny nose', 'sneezing', 'congestion', 'sore throat', 'cough', 'mild fever'],
+    symptoms: ['runny nose', 'sneezing', 'congestion', 'sore throat', 'cough', 'mild fever', 'cold'],
     medicines: [
       {
         name: 'Paracetamol',
@@ -369,7 +369,7 @@ export const diseases: Disease[] = [
   },
   {
     name: 'Vomiting / Nausea',
-    symptoms: ['vomiting', 'nausea', 'queasiness', 'loss of appetite'],
+    symptoms: ['vomiting', 'nausea', 'queasiness', 'loss of appetite', 'throwing up', 'feeling sick', 'puking'],
     medicines: [
       {
         name: 'Ondansetron',
@@ -849,8 +849,21 @@ export const generateResponse = (message: string, ageGroup: 'youth' | 'adult' | 
     }
   }
 
-  // Extract symptoms
-  const userSymptoms = lowerMessage.split(/[.,;]|\band\b/).map(s => s.trim()).filter(s => s.length > 0);
+  // Extract symptoms - improved to handle phrases like "i have cold", "having fever", etc.
+  // Remove common filler words and extract meaningful symptom terms
+  const fillerWords = ['i', 'am', 'have', 'having', 'got', 'getting', 'feel', 'feeling', 'experiencing', 'a', 'the', 'my', 'me', 'is', 'are', 'been', 'some', 'with', 'from', 'like', 'really', 'very', 'so', 'too', 'also', 'just', 'now', 'today', 'yesterday', 'since', 'for'];
+  
+  const words = lowerMessage
+    .replace(/[.,;!?]/g, ' ')
+    .split(/\s+/)
+    .map(w => w.trim())
+    .filter(w => w.length > 1 && !fillerWords.includes(w));
+  
+  // Also split by common separators
+  const phraseParts = lowerMessage.split(/[.,;]|\band\b/).map(s => s.trim()).filter(s => s.length > 0);
+  
+  // Combine individual words and phrase parts for matching
+  const userSymptoms = [...new Set([...words, ...phraseParts])];
 
   // Match symptoms to diseases
   const matchedDiseases = matchSymptoms(userSymptoms);
