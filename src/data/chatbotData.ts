@@ -539,6 +539,34 @@ export const diseases: Disease[] = [
     requiresHospital: false
   },
   {
+    name: 'Leg Pain / Cramps',
+    symptoms: ['leg pain', 'leg cramps', 'calf pain', 'thigh pain', 'leg ache', 'pain in legs', 'sore legs', 'leg soreness'],
+    medicines: [
+      {
+        name: 'Ibuprofen',
+        dosage: {
+          youth: '200mg every 8 hours',
+          adult: '400mg every 8 hours',
+          senior: '200mg every 8 hours'
+        },
+        timing: 'after food'
+      },
+      {
+        name: 'Magnesium supplement',
+        dosage: {
+          youth: 'Consult doctor',
+          adult: '250-300mg per day',
+          senior: '200mg per day'
+        },
+        timing: 'any time'
+      }
+    ],
+    foodToEat: ['Potassium-rich foods (bananas)', 'Magnesium-rich foods (spinach, nuts)', 'Electrolyte drinks', 'Water'],
+    foodToAvoid: ['Alcohol', 'Caffeine', 'Sugary drinks'],
+    duration: '2-7 days',
+    requiresHospital: false
+  },
+  {
     name: 'Joint Pain / Arthritis (early signs)',
     symptoms: ['joint pain', 'stiffness', 'swelling', 'reduced movement'],
     medicines: [
@@ -835,34 +863,54 @@ export const generateResponse = (message: string, ageGroup: 'youth' | 'adult' | 
   // User stated duration of disease
   const userDuration = extractUserDuration(lowerMessage);
 
-  // Check for specific disease - improved matching
-  // Check if user input matches any key word from disease names
+  // Helper function to check whole word match
+  const hasWholeWord = (text: string, word: string): boolean => {
+    const regex = new RegExp(`\\b${word}\\b`, 'i');
+    return regex.test(text);
+  };
+
+  // Check for specific disease - improved matching with whole word matching
+  // First pass: look for exact symptom matches in user message
+  let bestMatch: { disease: typeof diseases[0]; score: number } | null = null;
+  
   for (const disease of diseases) {
+    let score = 0;
+    
+    // Check if disease name appears in message
     const diseaseNameLower = disease.name.toLowerCase();
-    // Check exact match or if disease name contains the message
     if (lowerMessage.includes(diseaseNameLower)) {
-      if (userDuration) {
-        const diseaseDuration = extractDiseaseMaxDuration(disease.duration);
-        if (diseaseDuration && userDuration > diseaseDuration) {
-          return "It is advisable to consult a doctor.";
+      score += 100; // High priority for exact disease name match
+    }
+    
+    // Check each symptom for whole word match
+    for (const symptom of disease.symptoms) {
+      const symptomLower = symptom.toLowerCase();
+      // Check if full symptom phrase appears
+      if (lowerMessage.includes(symptomLower)) {
+        score += 10;
+      }
+      // Check individual words in symptom (whole word match only)
+      const symptomWords = symptomLower.split(/\s+/).filter(w => w.length > 3);
+      for (const word of symptomWords) {
+        if (hasWholeWord(lowerMessage, word)) {
+          score += 5;
         }
       }
-      return getRecommendation(disease, ageGroup);
     }
-    // Check if any word from disease name matches the user input
-    const diseaseWords = diseaseNameLower.split(/[\s\/]+/).filter(w => w.length > 2);
-    for (const word of diseaseWords) {
-      if (lowerMessage.includes(word) && word.length >= 4) {
-        // Strong match - disease name word appears in user message
-        if (userDuration) {
-          const diseaseDuration = extractDiseaseMaxDuration(disease.duration);
-          if (diseaseDuration && userDuration > diseaseDuration) {
-            return "It is advisable to consult a doctor.";
-          }
-        }
-        return getRecommendation(disease, ageGroup);
+    
+    if (score > 0 && (!bestMatch || score > bestMatch.score)) {
+      bestMatch = { disease, score };
+    }
+  }
+  
+  if (bestMatch && bestMatch.score >= 10) {
+    if (userDuration) {
+      const diseaseDuration = extractDiseaseMaxDuration(bestMatch.disease.duration);
+      if (diseaseDuration && userDuration > diseaseDuration) {
+        return "It is advisable to consult a doctor.";
       }
     }
+    return getRecommendation(bestMatch.disease, ageGroup);
   }
 
   // Extract symptoms - improved to handle phrases like "i have cold", "having fever", etc.
