@@ -717,6 +717,250 @@ export const diseases: Disease[] = [
     foodToAvoid: ['Caffeine', 'Heavy meals at night', 'Alcohol'],
     duration: 'Variable',
     requiresHospital: false
+  },
+  {
+    name: 'Chest Congestion',
+    symptoms: ['chest congestion', 'tightness in chest', 'mucus buildup', 'difficulty breathing', 'wheezing', 'productive cough', 'phlegm'],
+    medicines: [
+      {
+        name: 'Guaifenesin (Mucinex)',
+        dosage: {
+          youth: '100-200mg every 4 hours',
+          adult: '200-400mg every 4 hours',
+          senior: '200mg every 4 hours'
+        },
+        timing: 'any time'
+      },
+      {
+        name: 'Steam inhalation',
+        dosage: {
+          youth: '5-10 minutes twice daily',
+          adult: '10-15 minutes twice daily',
+          senior: '10 minutes twice daily'
+        },
+        timing: 'any time'
+      }
+    ],
+    foodToEat: ['Warm fluids', 'Ginger tea', 'Honey', 'Chicken soup', 'Citrus fruits', 'Garlic'],
+    foodToAvoid: ['Cold drinks', 'Dairy products', 'Fried foods', 'Processed foods'],
+    duration: '5-10 days',
+    requiresHospital: false
+  },
+  {
+    name: 'Body Pain / General Aches',
+    symptoms: ['body pain', 'body ache', 'general pain', 'muscle pain', 'overall soreness', 'aching all over', 'full body pain', 'widespread pain'],
+    medicines: [
+      {
+        name: 'Paracetamol',
+        dosage: {
+          youth: '250-500mg every 6 hours',
+          adult: '500-1000mg every 6 hours',
+          senior: '500mg every 6 hours'
+        },
+        timing: 'any time'
+      },
+      {
+        name: 'Ibuprofen',
+        dosage: {
+          youth: '200mg every 8 hours',
+          adult: '400mg every 8 hours',
+          senior: '200mg every 8 hours'
+        },
+        timing: 'after food'
+      }
+    ],
+    foodToEat: ['Anti-inflammatory foods', 'Turmeric', 'Ginger', 'Omega-3 rich foods', 'Leafy greens', 'Berries'],
+    foodToAvoid: ['Processed foods', 'Sugar', 'Alcohol', 'Fried foods'],
+    duration: '3-7 days',
+    requiresHospital: false
+  },
+  {
+    name: 'Dizziness / Vertigo',
+    symptoms: ['dizziness', 'dizzy', 'lightheaded', 'vertigo', 'spinning sensation', 'unsteady', 'balance problems', 'feeling faint'],
+    medicines: [
+      {
+        name: 'Meclizine',
+        dosage: {
+          youth: 'Consult doctor',
+          adult: '25mg once or twice daily',
+          senior: '12.5-25mg once daily'
+        },
+        timing: 'any time'
+      },
+      {
+        name: 'Ginger supplement',
+        dosage: {
+          youth: '250mg twice daily',
+          adult: '500mg twice daily',
+          senior: '250mg twice daily'
+        },
+        timing: 'with food'
+      }
+    ],
+    foodToEat: ['Water', 'Ginger', 'Low-sodium foods', 'Iron-rich foods', 'Vitamin C foods'],
+    foodToAvoid: ['Alcohol', 'Caffeine', 'Salty foods', 'Sugary foods'],
+    duration: '1-7 days',
+    requiresHospital: false
+  },
+  {
+    name: 'Fatigue / Tiredness',
+    symptoms: ['fatigue', 'tiredness', 'exhaustion', 'lack of energy', 'feeling tired', 'weakness', 'low energy', 'lethargy', 'drowsiness'],
+    medicines: [
+      {
+        name: 'Vitamin B12 supplement',
+        dosage: {
+          youth: 'Consult doctor',
+          adult: '1000mcg daily',
+          senior: '1000mcg daily'
+        },
+        timing: 'with food'
+      },
+      {
+        name: 'Iron supplement (if deficient)',
+        dosage: {
+          youth: 'Consult doctor',
+          adult: 'As prescribed by doctor',
+          senior: 'As prescribed by doctor'
+        },
+        timing: 'before food'
+      }
+    ],
+    foodToEat: ['Iron-rich foods (spinach, red meat)', 'Whole grains', 'Bananas', 'Nuts', 'Eggs', 'Citrus fruits'],
+    foodToAvoid: ['Sugary snacks', 'Processed foods', 'Excessive caffeine', 'Alcohol'],
+    duration: 'Variable, consult doctor if persistent',
+    requiresHospital: false
+  },
+  {
+    name: 'Arm Pain',
+    symptoms: ['arm pain', 'pain in arm', 'sore arm', 'arm ache', 'upper arm pain', 'forearm pain'],
+    medicines: [
+      {
+        name: 'Ibuprofen',
+        dosage: {
+          youth: '200mg every 8 hours',
+          adult: '400mg every 8 hours',
+          senior: '200mg every 8 hours'
+        },
+        timing: 'after food'
+      }
+    ],
+    foodToEat: ['Anti-inflammatory foods', 'Omega-3 fatty acids', 'Turmeric', 'Ginger'],
+    foodToAvoid: ['Processed foods', 'Sugary foods'],
+    duration: '3-7 days',
+    requiresHospital: false
+  },
+  {
+    name: 'Neck Pain / Stiffness',
+    symptoms: ['neck pain', 'stiff neck', 'neck stiffness', 'pain in neck', 'sore neck', 'neck ache'],
+    medicines: [
+      {
+        name: 'Ibuprofen',
+        dosage: {
+          youth: '200mg every 8 hours',
+          adult: '400mg every 8 hours',
+          senior: '200mg every 8 hours'
+        },
+        timing: 'after food'
+      },
+      {
+        name: 'Muscle relaxant (if severe)',
+        dosage: {
+          youth: 'Consult doctor',
+          adult: 'As prescribed by doctor',
+          senior: 'Consult doctor'
+        },
+        timing: 'any time'
+      }
+    ],
+    foodToEat: ['Magnesium-rich foods', 'Water', 'Anti-inflammatory foods'],
+    foodToAvoid: ['Alcohol', 'Caffeine'],
+    duration: '3-7 days',
+    requiresHospital: false
+  },
+  {
+    name: 'Shoulder Pain',
+    symptoms: ['shoulder pain', 'pain in shoulder', 'sore shoulder', 'shoulder ache', 'shoulder stiffness'],
+    medicines: [
+      {
+        name: 'Ibuprofen',
+        dosage: {
+          youth: '200mg every 8 hours',
+          adult: '400mg every 8 hours',
+          senior: '200mg every 8 hours'
+        },
+        timing: 'after food'
+      }
+    ],
+    foodToEat: ['Anti-inflammatory foods', 'Omega-3 fatty acids', 'Turmeric'],
+    foodToAvoid: ['Processed foods', 'Sugary foods'],
+    duration: '3-14 days',
+    requiresHospital: false
+  },
+  {
+    name: 'Knee Pain',
+    symptoms: ['knee pain', 'pain in knee', 'sore knee', 'knee ache', 'swollen knee'],
+    medicines: [
+      {
+        name: 'Ibuprofen',
+        dosage: {
+          youth: '200mg every 8 hours',
+          adult: '400mg every 8 hours',
+          senior: '200mg every 8 hours'
+        },
+        timing: 'after food'
+      },
+      {
+        name: 'Glucosamine supplement',
+        dosage: {
+          youth: 'Consult doctor',
+          adult: '1500mg daily',
+          senior: '1500mg daily'
+        },
+        timing: 'with food'
+      }
+    ],
+    foodToEat: ['Anti-inflammatory foods', 'Omega-3 fatty acids', 'Vitamin C-rich foods', 'Bone broth'],
+    foodToAvoid: ['Sugary foods', 'Refined carbs', 'Red meat'],
+    duration: '7-14 days',
+    requiresHospital: false
+  },
+  {
+    name: 'Foot Pain',
+    symptoms: ['foot pain', 'pain in foot', 'sore feet', 'heel pain', 'arch pain', 'plantar fasciitis'],
+    medicines: [
+      {
+        name: 'Ibuprofen',
+        dosage: {
+          youth: '200mg every 8 hours',
+          adult: '400mg every 8 hours',
+          senior: '200mg every 8 hours'
+        },
+        timing: 'after food'
+      }
+    ],
+    foodToEat: ['Anti-inflammatory foods', 'Calcium-rich foods', 'Vitamin D foods'],
+    foodToAvoid: ['Sugary foods', 'Processed foods'],
+    duration: '7-14 days',
+    requiresHospital: false
+  },
+  {
+    name: 'Hand Pain',
+    symptoms: ['hand pain', 'pain in hand', 'sore hands', 'wrist pain', 'finger pain', 'carpal tunnel'],
+    medicines: [
+      {
+        name: 'Ibuprofen',
+        dosage: {
+          youth: '200mg every 8 hours',
+          adult: '400mg every 8 hours',
+          senior: '200mg every 8 hours'
+        },
+        timing: 'after food'
+      }
+    ],
+    foodToEat: ['Anti-inflammatory foods', 'Omega-3 fatty acids', 'Vitamin B6 foods'],
+    foodToAvoid: ['Salty foods', 'Processed foods'],
+    duration: '3-14 days',
+    requiresHospital: false
   }
 ];
 
