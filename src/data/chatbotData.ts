@@ -1109,7 +1109,8 @@ export const generateResponse = (message: string, ageGroup: 'youth' | 'adult' | 
 
   // Helper function to check whole word match
   const hasWholeWord = (text: string, word: string): boolean => {
-    const regex = new RegExp(`\\b${word}\\b`, 'i');
+    const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b${escapedWord}\\b`, 'i');
     return regex.test(text);
   };
 
@@ -1126,18 +1127,20 @@ export const generateResponse = (message: string, ageGroup: 'youth' | 'adult' | 
       score += 100; // High priority for exact disease name match
     }
     
-    // Check each symptom for whole word match
+    // Check each symptom for matches
     for (const symptom of disease.symptoms) {
       const symptomLower = symptom.toLowerCase();
-      // Check if full symptom phrase appears
+      
+      // Check if full symptom phrase appears (e.g., "leg pain" in "i have leg pain")
       if (lowerMessage.includes(symptomLower)) {
-        score += 10;
+        score += 20; // Higher score for exact symptom phrase match
       }
-      // Check individual words in symptom (whole word match only)
-      const symptomWords = symptomLower.split(/\s+/).filter(w => w.length > 3);
+      
+      // Check individual words in symptom (whole word match only, words > 2 chars)
+      const symptomWords = symptomLower.split(/\s+/).filter(w => w.length > 2);
       for (const word of symptomWords) {
         if (hasWholeWord(lowerMessage, word)) {
-          score += 5;
+          score += 3;
         }
       }
     }
@@ -1147,7 +1150,8 @@ export const generateResponse = (message: string, ageGroup: 'youth' | 'adult' | 
     }
   }
   
-  if (bestMatch && bestMatch.score >= 10) {
+  // Return best match if score is high enough (symptom phrase match = 20, or multiple word matches)
+  if (bestMatch && bestMatch.score >= 6) {
     if (userDuration) {
       const diseaseDuration = extractDiseaseMaxDuration(bestMatch.disease.duration);
       if (diseaseDuration && userDuration > diseaseDuration) {
