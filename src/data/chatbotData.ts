@@ -835,10 +835,12 @@ export const generateResponse = (message: string, ageGroup: 'youth' | 'adult' | 
   // User stated duration of disease
   const userDuration = extractUserDuration(lowerMessage);
 
-  // Check for specific disease
+  // Check for specific disease - improved matching
+  // Check if user input matches any key word from disease names
   for (const disease of diseases) {
-    if (lowerMessage.includes(disease.name.toLowerCase())) {
-      // Check duration if detected in message
+    const diseaseNameLower = disease.name.toLowerCase();
+    // Check exact match or if disease name contains the message
+    if (lowerMessage.includes(diseaseNameLower)) {
       if (userDuration) {
         const diseaseDuration = extractDiseaseMaxDuration(disease.duration);
         if (diseaseDuration && userDuration > diseaseDuration) {
@@ -846,6 +848,20 @@ export const generateResponse = (message: string, ageGroup: 'youth' | 'adult' | 
         }
       }
       return getRecommendation(disease, ageGroup);
+    }
+    // Check if any word from disease name matches the user input
+    const diseaseWords = diseaseNameLower.split(/[\s\/]+/).filter(w => w.length > 2);
+    for (const word of diseaseWords) {
+      if (lowerMessage.includes(word) && word.length >= 4) {
+        // Strong match - disease name word appears in user message
+        if (userDuration) {
+          const diseaseDuration = extractDiseaseMaxDuration(disease.duration);
+          if (diseaseDuration && userDuration > diseaseDuration) {
+            return "It is advisable to consult a doctor.";
+          }
+        }
+        return getRecommendation(disease, ageGroup);
+      }
     }
   }
 
@@ -878,12 +894,27 @@ export const generateResponse = (message: string, ageGroup: 'youth' | 'adult' | 
         }
       }
     }
+    
+    // If only one match or if user input directly matches a symptom that's specific to one disease
     if (matchedDiseases.length === 1) {
       return getRecommendation(matchedDiseases[0], ageGroup);
-    } else {
-      const diseaseNames = matchedDiseases.slice(0, 3).map(d => d.name).join(', ');
-      return `Based on your symptoms, you might be experiencing one of the following: ${diseaseNames}. Can you provide more details about your symptoms?`;
     }
+    
+    // Check if any matched disease has the user's input as a primary symptom (first 3 symptoms are more specific)
+    for (const disease of matchedDiseases) {
+      const primarySymptoms = disease.symptoms.slice(0, 3);
+      for (const symptom of primarySymptoms) {
+        if (lowerMessage.includes(symptom) || symptom.includes(lowerMessage.trim())) {
+          // Check if this symptom appears in the disease name - highest priority
+          if (disease.name.toLowerCase().includes(symptom) || disease.name.toLowerCase().includes(lowerMessage.trim())) {
+            return getRecommendation(disease, ageGroup);
+          }
+        }
+      }
+    }
+    
+    // Still multiple matches - return the first one (most symptom matches)
+    return getRecommendation(matchedDiseases[0], ageGroup);
   }
   
   return "I'm not able to determine your condition based on the information provided. Could you please describe your symptoms in more detail?";
