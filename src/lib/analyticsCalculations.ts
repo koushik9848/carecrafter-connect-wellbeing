@@ -59,13 +59,16 @@ export function calculateAnalytics(
   startDate: Date,
   endDate: Date
 ): AnalyticsData {
-  // Filter entries within date range
+  // Format dates for comparison (YYYY-MM-DD strings)
+  const startDateStr = format(startDate, 'yyyy-MM-dd');
+  const endDateStr = format(endDate, 'yyyy-MM-dd');
+  
+  // Filter entries within date range using string comparison to avoid timezone issues
   const filteredEntries = Object.entries(entries)
     .filter(([date]) => {
-      const d = new Date(date);
-      return d >= startDate && d <= endDate;
+      return date >= startDateStr && date <= endDateStr;
     })
-    .sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime());
+    .sort(([a], [b]) => a.localeCompare(b));
 
   if (filteredEntries.length === 0) {
     return getEmptyAnalytics();
@@ -96,10 +99,12 @@ export function calculateAnalytics(
   const prevStartDate = subDays(startDate, periodLength);
   const prevEndDate = subDays(startDate, 1);
 
+  const prevStartDateStr = format(prevStartDate, 'yyyy-MM-dd');
+  const prevEndDateStr = format(prevEndDate, 'yyyy-MM-dd');
+  
   const prevEntries = Object.entries(entries)
     .filter(([date]) => {
-      const d = new Date(date);
-      return d >= prevStartDate && d <= prevEndDate;
+      return date >= prevStartDateStr && date <= prevEndDateStr;
     });
 
   const prevAvg = prevEntries.length > 0
@@ -440,11 +445,12 @@ export function generateReportData(
     }
   }
 
-  // Count logged days
+  // Count logged days using string comparison
+  const startDateStr = format(startDate, 'yyyy-MM-dd');
+  const endDateStr = format(endDate, 'yyyy-MM-dd');
   const daysLogged = Object.entries(entries)
     .filter(([date]) => {
-      const d = new Date(date);
-      return d >= startDate && d <= endDate;
+      return date >= startDateStr && date <= endDateStr;
     }).length;
 
   const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
